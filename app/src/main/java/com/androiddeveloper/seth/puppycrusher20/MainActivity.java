@@ -1,7 +1,9 @@
 package com.androiddeveloper.seth.puppycrusher20;
 //http://developer.android.com/guide/topics/ui/layout/gridview.html
 //staring point and cite
-
+/**
+ * the imports
+ */
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -23,22 +25,31 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     // Global Variables
+    //selected spot on grid view
     private int selectedPosition = -1;
     private int changingPosition = -1;
+    //the image selected on frid view
     private View selectedView = null;
     private View changingView = null;
+    //the id of the grid view
     private long selectedId = -1;
     private long changingId = -1;
+    // image in gridview spot
     private ImageView selectedImage = null;
     private ImageView changingImage = null;
+    // its a placeholder
     private Integer placeholder = null;
+    //the arrays to hold what pictures are in the rows and cols for comparing a match of 3+
     private final int[][] row = {{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}, {16, 17, 18, 19}};
     private final int[][] col = {{0, 4, 8, 12, 16}, {1, 5, 9, 13, 17}, {2, 6, 10, 14, 18}, {3, 7, 11, 15, 19}};
+    //temp holder
     private Object temp;
+    //the score of current game
     private int score = 0;
-
+    //make the arrays
     ArrayList<Integer> matchedRow = new ArrayList<>();
     ArrayList<Integer> matchedCol = new ArrayList<>();
+    //the array for randomly generating replacement images
     private Integer[] uniqueThumb = {R.drawable.sample_0, R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5, R.drawable.sample_6, R.drawable.sample_7};
 
 
@@ -57,18 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/**
+ *  gets stuff from layout
+ */
         final GridView gridview = (GridView) findViewById(R.id.gridview);
         final TextView info = (TextView) findViewById(R.id.info);
         final TextView scoreboard = (TextView) findViewById(R.id.score);
+        //sets the scoreboard
         scoreboard.setText("Score: " + score);
         gridview.setAdapter(new ImageAdapter(this));
-
+//a listener for when someone selects an image
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -124,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+// randomly generates a number for selecting a replacement image
     private Integer getRandamDraw() {
         int num;
         Random ran = new Random();
@@ -133,10 +150,12 @@ public class MainActivity extends AppCompatActivity {
         return uniqueThumb[num];
     }
 
-
+//if a match is found the pictures need to be replaced with new ones  and the score updated
     private void replaceLines(GridView g) {
 
-
+/**
+ * if row was a match
+ */
         if (!matchedRow.isEmpty()) {
             for (int i = 0; i < matchedRow.size(); i++) {
                 ImageView iv = (ImageView) g.getChildAt(matchedRow.get(i));
@@ -145,7 +164,9 @@ public class MainActivity extends AppCompatActivity {
                 //the idea was to delay do that a blood splat would appear and then be replaced using the line below though was not a useful solution
                // SystemClock.sleep(1000);
             }
-
+/**
+ * then place a new image
+ */
             for (int i = 0; i < matchedRow.size(); i++) {
                 ImageView iv = (ImageView) g.getChildAt(matchedRow.get(i));
                 Integer newDraw = getRandamDraw();
@@ -158,11 +179,12 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < matchedCol.size(); i++) {
                 ImageView iv = (ImageView) g.getChildAt(matchedCol.get(i));
                 iv.setImageResource(R.drawable.tn_blood);
+                //replaces image with a blood image, however it is so fast you typically won't notice it did
                 mThumbIds[matchedCol.get(i)] = R.drawable.tn_blood;
               //  SystemClock.sleep(1000);
 
             }
-
+//replace image with new one
             for (int i = 0; i < matchedCol.size(); i++) {
                 ImageView iv = (ImageView) g.getChildAt(matchedCol.get(i));
                 Integer newDraw = getRandamDraw();
@@ -174,6 +196,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //check method
+
+    /**
+     *
+     * @param pos position of tap on the grid
+     * @return
+     */
     private boolean lineChecker(int pos) {
         boolean match = false;
 
@@ -188,6 +216,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //rowcheck method
+
+    /**
+     *
+     * @param arr it's an array though feel free to say it in a pirate voice
+     * @return the line of pics that need to be replaced if at least three are the same
+     */
     private boolean rowCheck(int[] arr) {
         boolean line = false;
         int count = 1;
@@ -221,6 +255,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //colcheck method
+
+    /**
+     *
+     * @param arr the arr array is passed for col checking as well
+     * @return the line of pics that need to be replaced if at least three are the same
+     */
     private boolean colCheck(int[] arr) {
         boolean line = false;
         int count = 1;
@@ -257,6 +297,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     //row method
+
+    /**
+     *
+     * @param pos the position clicked is and this verifies what row it is in
+     * @return
+     */
     private int getRow(int pos) {
         int ret = -1;
         for (int i = 0; i < row.length; i++) {
@@ -273,6 +319,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     //col method
+
+    /**
+     *
+     * @param pos position clicked is passed in to verify what coloumn that the finger clicked
+     * @return the inner array that holds said position
+     */
     private int getCol(int pos) {
         int reter = -1;
         for (int i = 0; i < col.length; i++) {
@@ -286,6 +338,9 @@ public class MainActivity extends AppCompatActivity {
         return reter;
     }
 
+    /**
+     * resests the selection if the switch is not valid
+     */
     private void resetSelection() {
         selectedPosition = -1;
         selectedView = null;
@@ -297,6 +352,9 @@ public class MainActivity extends AppCompatActivity {
         changingImage = null;
     }
 
+    /**
+     * adapts the image accordingly
+     */
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
 
@@ -317,6 +375,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // create a new ImageView for each item referenced by the Adapter
+
+        /**
+         *
+         * @param position the place the finger clicked
+         * @param convertView the image in that position
+         * @param parent the parents of something important
+         * @return the image in the position with padding and looking good to screen
+         */
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
             if (convertView == null) {
