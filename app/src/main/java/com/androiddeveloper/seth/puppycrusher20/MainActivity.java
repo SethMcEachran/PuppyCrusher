@@ -1,5 +1,9 @@
 package com.androiddeveloper.seth.puppycrusher20;
 //http://developer.android.com/guide/topics/ui/layout/gridview.html
+//pictures from
+// http://www.publicdomainpictures.net
+//http://www.webweaver.nu/clipart/animals/dogs/
+
 //staring point and cite
 /**
  * the imports
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
  *  gets stuff from layout
  */
         final GridView gridview = (GridView) findViewById(R.id.gridview);
-        final TextView info = (TextView) findViewById(R.id.info);
+      //  final TextView info = (TextView) findViewById(R.id.info);
         final TextView scoreboard = (TextView) findViewById(R.id.score);
         //sets the scoreboard
         scoreboard.setText("Score: " + score);

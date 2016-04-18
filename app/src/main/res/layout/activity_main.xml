@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@mipmap/cloud">
+
 
     <TextView
         android:layout_width="fill_parent"
@@ -29,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Selected Position: -1"
+        android:text=" "
         android:id="@+id/info"
         android:layout_weight="0.3"
         android:singleLine="false" />
